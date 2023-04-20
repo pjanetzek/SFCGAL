@@ -58,27 +58,16 @@ endif ()
 # dependencies
 #-----------------------------------------------------------
 
-#-- find CGAL  ---------------------------------------------
-option( CGAL_USE_AUTOLINK "disable CGAL autolink" OFF )
-if( ${CGAL_USE_AUTOLINK} )
-	add_definitions( "-DCGAL_NO_AUTOLINK" )
-endif()
+set(Boost_USE_STATIC_LIBS ON)
 
-find_package( CGAL 5.3 COMPONENTS Core REQUIRED )
-message( STATUS "CGAL ${CGAL_VERSION} found" )
-
-# For CGAL >= 5
-add_definitions( "-DCGAL_USE_GMPXX=1" )
-
-include_directories( ${CMAKE_BINARY_DIR}/include )
-
+message(STATUS ">>>>>>>>>>>>>>>> ${Boost_USE_STATIC_LIBS} <<<<<<<<<<<<<<<<<<<")
+#option( Boost_USE_STATIC_LIBS "boost use dynamic libraries" ON )
 #-- BOOST --------------------------------------------------
 option( Boost_USE_AUTO_LINK "boost use autolink" OFF )
 if( NOT ${Boost_USE_AUTO_LINK} )
 	add_definitions( "-DBOOST_ALL_NO_LIB" )
 endif()
 
-option( Boost_USE_STATIC_LIBS "boost use dynamic libraries" OFF )
 if( Boost_USE_STATIC_LIBS )
 	message( STATUS "Boost_USE_STATIC_LIBS=ON" )
 	add_definitions( "-DBOOST_THREAD_USE_LIB" )
@@ -94,6 +83,22 @@ if( ${Boost_USE_MULTITHREAD} )
 else()
 	message( STATUS "Boost_USE_MULTITHREAD=OFF" )
 endif()
+
+
+#-- find CGAL  ---------------------------------------------
+option( CGAL_USE_AUTOLINK "disable CGAL autolink" OFF )
+if( ${CGAL_USE_AUTOLINK} )
+	add_definitions( "-DCGAL_NO_AUTOLINK" )
+endif()
+
+find_package( CGAL 5.3 COMPONENTS Core REQUIRED )
+message( STATUS "CGAL ${CGAL_VERSION} found" )
+
+# For CGAL >= 5
+add_definitions( "-DCGAL_USE_GMPXX=1" )
+
+include_directories( ${CMAKE_BINARY_DIR}/include )
+
 
 #-- minimalist build allowed with boost version older than 1.48
 set( SFCGAL_Boost_COMPONENTS thread system serialization )
